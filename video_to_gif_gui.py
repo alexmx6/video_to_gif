@@ -87,6 +87,8 @@ class VideoToGIFConverter:
         self.updating = False
         
         self.crop_entries = {}
+
+        self.user_defined_output = False
         
         self.setup_ui()
         
@@ -390,10 +392,13 @@ class VideoToGIFConverter:
         )
         if filename:
             self.output_gif.set(filename)
-    
+            self.user_defined_output = True
+        else:
+            self.user_defined_output = False
+
     def auto_generate_output(self, *args):
         """Generate output path"""
-        if self.input_video.get() and not self.output_gif.get():
+        if self.input_video.get() and not self.user_defined_output or self.input_video.get() and len(self.output_gif.get()) == 0:
             input_path = Path(self.input_video.get())
             output_path = input_path.with_suffix('.gif')
             self.output_gif.set(str(output_path))
